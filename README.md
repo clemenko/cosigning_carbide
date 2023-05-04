@@ -162,7 +162,11 @@ cosign verify-attestation --key $KEY $image --type vuln | jq -r '.payload' | bas
 
 ## Enforcement with Kubewarden
 
-https://rancherfederal.github.io/carbide-docs/docs/registry-docs/enforcement
+There are a few tools in the Policy Enforcement space that we can use to ensure only validated images can be deployed. Let's look closely at [Kubewarden](https://www.kubewarden.io/).
+
+From the site: *Kubewarden is a policy engine for Kubernetes. Its mission is to simplify the adoption of policy-as-code.*
+
+[Rancher Government Solutions (RGS)](https://ranchergovernment.com/) has a clean docs page that walks through setting up Kubewarden and loading the first policy: https://rancherfederal.github.io/carbide-docs/docs/registry-docs/enforcement. 
 
 
 ## Air Gap-iness
