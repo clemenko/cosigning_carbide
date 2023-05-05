@@ -18,8 +18,9 @@ author: Andy Clemenko, @clemenko, andy.clemenko@rancherfederal.com
 > * [What is a Secure Software Supply Chain?](#what-is-a-secure-software-supply-chain)
 > * [Tooling](#Tooling)
 > * [Validation and Inspection](#validation-and-inspection)
-> * [Enforcement with Kubewarden](#enforcement-with-kubewarden)
 > * [Air Gap-iness](#air-gap-iness)
+> * [Enforcement](#enforcement)
+> * [Long Term Value](#long-term-value)
 
 ---
 
@@ -160,19 +161,24 @@ cosign verify-attestation --key $KEY $image --type vuln | jq -r '.payload' | bas
 cosign verify-attestation --key $KEY $image --type vuln | jq -r '.payload' | base64 -d | jq -r '.predicate.scanner.result.Results[] | "PkgName: " + .Vulnerabilities[].PkgName + "  -  Sev: " + .Vulnerabilities[].Severity  + "  - ID: " + .Vulnerabilities[].VulnerabilityID' | sort -u
 ```
 
-## Enforcement with Kubewarden
-
-There are a few tools in the Policy Enforcement space that we can use to ensure only validated images can be deployed. Let's look closely at [Kubewarden](https://www.kubewarden.io/).
-
-From the site: *Kubewarden is a policy engine for Kubernetes. Its mission is to simplify the adoption of policy-as-code.*
-
-[Rancher Government Solutions (RGS)](https://ranchergovernment.com/) has a clean docs page that walks through setting up Kubewarden and loading the first policy: https://rancherfederal.github.io/carbide-docs/docs/registry-docs/enforcement. 
-
-
 ## Air Gap-iness
 
 ![supply_chain](img/supply_chain.png)
 
-Here is where the value of RGS's Carbide shines. We can use the `cosign` to save all the Attestations and images locally on the low-side. Then we can leverage a Diode or Cross Domain Solution to get the files across the airgap. Once across we can use `cosign` again to sign and load the same images, with Attestations, into a high-side registry. Please review the [Carbide docs](https://rancherfederal.github.io/carbide-docs/docs/registry-docs/pulling-images) for Downloading Release Images. We are going to high light saving and signing one image in the example below.
+We are starting to see an increase of Organizations isolating their workloads across an air gap. Having a Secure Supply Chain does not stop at the edge of the air gap. RGS's Secure Supply Chain leverages `cosign` for more than the signaturee and attestations. `cosign` also has the ability to save all the Attestations and images locally.This ability is a great starting point. Then we can leverage a Diode or Cross Domain Solution to get the files across the air gap. Once across we can use `cosign` again to sign and load the same images, with Attestations, into a high-side registry. Please review the [Carbide docs](https://rancherfederal.github.io/carbide-docs/docs/registry-docs/pulling-images) for Downloading Release Images.
 
+## Enforcement
 
+![kubewarden](img/logo-kubewarden.svg)
+
+There are a few tools in the Policy Enforcement space that we can use to ensure only validated images can be deployed. All the tools use a "Security as Code" approach to enforcement of one characteristic or another. The real goal of using an enforcement tool is to reduce the surface area of attack while increasing thew automation.
+
+From the site: *Kubewarden is a policy engine for Kubernetes. Its mission is to simplify the adoption of policy-as-code.*
+
+[Rancher Government Solutions (RGS)](https://ranchergovernment.com/) has a clean docs page that walks through [Kubewarden, Kyverno, Open Policy Agen](https://rancherfederal.github.io/carbide-docs/docs/registry-docs/enforcement). Some of the tools are based on [Web Assembly (WASM)](https://webassembly.org/). Other are based on other formats like [Open Policy Agent - Rego](https://www.openpolicyagent.org/docs/latest/policy-language/). Either of the tools will work at enforcing the signature validation of the Carbide images.
+
+## Long Term Value
+
+![conveyor](img/conveyor.jpg)
+
+With all the new treats affecting Secure Supply Chains we need to start thinking more macro. How can we ensure our software is secure today? What about tomorrow? The real value comes in building a process of automated, human free, fresh, validated, scanned, signed images with a well documented chain if custody. Carbide's Registry dramatically lowers the barrier to entry for creating such a chain. Carbide is the best starting point for our federal customers. Please feel to reach out to info@rancherfederal.com if you want to deep dive on creating a Secure Supply Chain for your organization.
