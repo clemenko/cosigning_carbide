@@ -7,7 +7,7 @@ author: Andy Clemenko, @clemenko, andy.clemenko@rancherfederal.com
 
 ![shield](img/shield_plus.jpg)
 
-[Rancher Government Solutions (RGS)](https://ranchergovernment.com/) is proud to announce Carbide. Carbide is a mix of a several advanced features to enhance Rancher's Multicluster Manager named [Rancher](https://www.rancher.com/products/rancher). The features include Offline Docs, a STIG Observability tool called Stigatron, and a Secure Software Supply Chain. We are going to focus on the Secure Software Supply Chain in this guide. Carbide is bringing Cryptographic Signatures and Software Bill of Materials (SBOMs) to a fully supported private container registry. Carbide's registry should be the **only** starting point for all the SUSE/Rancher products. Please check Github for the latest [Carbide docs](https://rancherfederal.github.io/carbide-docs/docs/intro) for more information. This guide will walk through some of the technical details about Carbide's Secure Software Supply Chain.
+[Rancher Government Solutions (RGS)](https://ranchergovernment.com/) is proud to announce [Carbide](https://ranchergovernment.com/carbide). Carbide is a mix of a several advanced features to enhance Rancher's Multicluster Manager named [Rancher](https://www.rancher.com/products/rancher). The features include Offline Docs, a STIG Observability tool called Stigatron, and a Secure Software Supply Chain. We are going to focus on the Secure Software Supply Chain in this guide. Carbide is bringing Cryptographic Signatures and Software Bill of Materials (SBOMs) to a fully supported private container registry. Carbide's registry should be the **only** starting point for all the SUSE/Rancher products. This guide will walk through some of the technical details about Carbide's Secure Software Supply Chain.
 
 ---
 
@@ -50,16 +50,20 @@ Thanks to [Chris DeRusha](https://www.cio.gov/about/members-and-leadership/derus
 * Freshness - How old are the artifacts?
 * Repeatability - Is everything automated?
 
-There are quite a few steps in creating a Secure Supply Chain. Understanding the pieces is important to identify the surface area for attack. With Carbide, RGS is managing all these steps for the [Rancher stack](https://www.rancher.com/products). Carbide has achieved [SLSA - Level 3](https://slsa.dev/spec/v0.1/levels) for our products. What Level 3 really means is:
+There are quite a few steps in creating a Secure Supply Chain. Understanding the pieces is important to identify the surface area for attack. With Carbide, RGS is managing all these steps for the [Rancher stack](https://www.rancher.com/products). Carbide has achieved [SLSA (v0.1) - Level 3](https://slsa.dev/spec/v0.1/levels) for our products. What Level 3 really means is:
 > The source and build platforms meet specific standards to guarantee the auditability of the source and the integrity of the provenance respectively.
 
 ![slsa](img/slsa3.jpg)
 
-With SLSA Level 3 our downstream customers have a cryptographically verifiable SBOM, Vulnerability Report and Image. This is a great starting point for populating and internal enterprise registry. This is also a great starting point for the ingest side of a cross domain solution. `Cosign` can be used for both validating and signing the artifacts. Re-signing the artifacts creates a gate in which the new signature can validated downstream. In effect this process is creating a 100% verifiable Chain of Custody. Let's start looking at the technical side of things. But, we are going to need a few tools.
+With SLSA (v0.1) Level 3 our downstream customers have a cryptographically verifiable SBOM, Vulnerability Report and Image. Under the new [SLSA v1.0](https://slsa.dev/spec/v1.0/levels) specification Carbide is now at a [Build Level 2](https://slsa.dev/spec/v1.0/levels#build-l2). This is due to change in the spec focusing on the build side. The specification is going to add "tracks" in the future.
+
+> Note: The previous version of the specification used a single unnamed track, SLSA 1–4. For version 1.0 the Source aspects were removed to focus on the Build track. A Source track may be added in future versions.
+
+This is a great starting point for populating and internal enterprise registry. This is also a great starting point for the ingest side of a cross domain solution. `Cosign` can be used for both validating and signing the artifacts. Re-signing the artifacts creates a gate in which the new signature can validated downstream. In effect this process is creating a 100% verifiable Chain of Custody. Let's start looking at the technical side of things. But, we are going to need a few tools.
 
 ## Tooling
 
-We are going to need a few tools for pulling, and inspecting the images from Carbide. You can install these tools on anywhere on MacOS and Linux. Idealy, install these tools on a server that will be responsible for managing the Secure Supply Chain. Using local workstations is not a great idea for the automation pieces.
+We are going to need a few tools for pulling, and inspecting the images from Carbide. You can install these tools on anywhere on MacOS and Linux. Ideally, install these tools on a server that will be responsible for managing the Secure Supply Chain. Using local workstations is not a great idea for the automation pieces.
 
 * [cosign - From Chainguard](https://edu.chainguard.dev/open-source/sigstore/cosign/an-introduction-to-cosign/) - Security signature and validation
 * [jq](https://stedolan.github.io/jq/) - command line JSON parsing, available in most linux distributions
@@ -181,4 +185,4 @@ From the site: *Kubewarden is a policy engine for Kubernetes. Its mission is to 
 
 ![conveyor](img/conveyor.jpg)
 
-With all the new treats affecting Secure Supply Chains we need to start thinking more macro. How can we ensure our software is secure today? What about tomorrow? The real value comes in building a process of automated, human free, fresh, validated, scanned, signed images with a well documented chain if custody. Carbide's Registry dramatically lowers the barrier to entry for creating such a chain. Carbide is the best starting point for our federal customers. Please feel to reach out to info@rancherfederal.com if you want to deep dive on creating a Secure Supply Chain for your organization.
+With all the new threats affecting Secure Supply Chains we need to start thinking more macro. How can we ensure our software is secure today? What about tomorrow? The real value comes in building a process of automated, human free, fresh, validated, scanned, signed images with a well documented chain if custody. Carbide's Registry dramatically lowers the barrier to entry for creating such a chain. Carbide is the best starting point for our federal customers. Please feel to reach out to info@rancherfederal.com if you want to deep dive on creating a Secure Supply Chain for your organization. Please check Github for the latest [Carbide docs](https://rancherfederal.github.io/carbide-docs/docs/intro). For more detailed information please visit [https://ranchergovernment.com/carbide](https://ranchergovernment.com/carbide).
