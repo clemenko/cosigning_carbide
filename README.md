@@ -33,7 +33,7 @@ Before we get too technical, let's talk about value. The technical and mission v
 Let's first break down some of the Buzzword Bingo. At a high level:
 
 * **Attestations** - Confirmation of Authenticity - Meaning the authenticity of the file/object can be verified through the signature and tooling.
-* **Vulnerability Report** - List of the CVEs in the image. The Vulnerability Report is has uploaded to the Registry with the Signing Key. There is an Attestation of the Vulnerability Report.
+* **Vulnerability Report** - List of the Common Vulnerabilities and Exposures ( CVEs ) in the image. The Vulnerability Report is has uploaded to the Registry with the Signing Key. There is an Attestation of the Vulnerability Report.
 * **Software Bill of Materials (SBOMs)** - A list of components in the image. Similar to the Vulnerability Report the SBOM is also a file that has can be authenticated. The SBOM is great for looking at the individual components in the image.
 * **Signature** - Signature used to sign all the Attestations and Image. There is a basic Public/Private key pair usage. The public key for Carbide is published in a few places.
 
@@ -63,7 +63,7 @@ This is a great starting point for populating and internal enterprise registry. 
 
 ## Tooling
 
-We are going to need a few tools for pulling, and inspecting the images from Carbide. You can install these tools on anywhere on MacOS and Linux. Ideally, install these tools on a server that will be responsible for managing the Secure Supply Chain. Using local workstations is not a great idea for the automation pieces.
+We are going to need a few tools for pulling, and inspecting the images from Carbide. he following tools can be installed on both MacOS, Linux and Windows. Ideally, install these tools on a server that will be responsible for managing the Secure Supply Chain. Using local workstations is not a great idea for the automation pieces.
 
 * [cosign - From Chainguard](https://edu.chainguard.dev/open-source/sigstore/cosign/an-introduction-to-cosign/) - Security signature and validation
 * [jq](https://stedolan.github.io/jq/) - command line JSON parsing, available in most linux distributions
